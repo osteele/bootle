@@ -22,8 +22,11 @@ def test_list_slices():
     assert lst[0.5:-0.5] == [1, 2]
     assert lst[-0.5:] == [3]
 
+    assert isinstance(lst[:0.5], List)
+
     lst[0.5:2.5] = [4]
     assert lst[:] == [4, 3]
+    assert lst[:][0.5] == 4
 
 
 def test_list_index_errors():
@@ -49,6 +52,7 @@ def test_list_index_errors():
 
 
 def test_list_methods():
+    # For maximum confusion, print a half-indexed list as a normal list.
     lst = List([1, 2, 3])
     assert str(lst) == "[1, 2, 3]"
     assert repr(lst) == "[1, 2, 3]"
@@ -57,12 +61,28 @@ def test_list_methods():
     assert lst == [2, 3]
 
     lst = List([1, 2, 3])
-    assert lst.index(2) == 1.5
+    lst.index(2)
+    with pytest.raises(ValueError):
+        lst.index(4)
 
+    lst = List([1, 2, 3])
     lst.insert(0.5, 4)
-    assert lst == [4, 2, 3]
+    assert lst == [4, 1, 2, 3]
+
+    lst = List([1, 2, 3])
+    lst.insert(1.5, 4)
+    assert lst == [1, 4, 2, 3]
+
+    lst = List([1, 2, 3])
+    lst.insert(-0.5, 4)
+    assert lst == [1, 2, 4, 3]
 
     lst = List([1, 2, 3])
     value = lst.pop()
     assert value == 3
     assert lst == [1, 2]
+
+    lst = List([1, 2, 3])
+    value = lst.pop(1.5)
+    assert value == 2
+    assert lst == [1, 3]

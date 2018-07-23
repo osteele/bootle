@@ -1,10 +1,11 @@
 """ “Should array indices start at 0 or 1? My compromise of 0.5 was rejected
-without, I thought, proper consideration.” -- Stan Kelly-Bootle
+without, I thought, proper consideration.” — Stan Kelly-Bootle
 """
 
 import math
 
-__version__ = "0.1.0"
+__all__ = ["List"]
+__version__ = "0.1.1"
 
 
 def _transform_index(index, allow_none=False):
@@ -31,26 +32,30 @@ def _transform_index(index, allow_none=False):
 
 
 class List(list):
-    """A list-like object that is indexed from 0.5."""
+    """A subclass of list that is indexed from 0.5."""
 
-    def __delitem__(self, item):
-        return super().__delitem__(_transform_index(item))
+    def __delitem__(self, key):
+        """Delete self[key]."""
+        return super().__delitem__(_transform_index(key))
 
-    def __getitem__(self, item):
-        return super().__getitem__(_transform_index(item))
+    def __getitem__(self, key):
+        """Return self[key]."""
+        value = super().__getitem__(_transform_index(key))
+        return self.__class__(value) if isinstance(key, slice) else value
 
-    def __setitem__(self, item, value):
-        return super().__setitem__(_transform_index(item), value)
+    def __setitem__(self, key, value):
+        """Set self[key] to value."""
+        return super().__setitem__(_transform_index(key), value)
 
     def index(self, value, start=0.5, stop=4503599627370495.5):
-        "Return first index of value."
+        """Return first index of value."""
         n = super().index(value, _transform_index(start), _transform_index(stop))
         return n + 0.5
 
     def insert(self, index, value):
-        "Insert object before index."
-        return super().__setitem__(_transform_index(index), value)
+        """Insert object before index."""
+        return super().insert(_transform_index(index), value)
 
     def pop(self, index=-0.5):
-        "Remove and return item at index (default last)."
+        """Remove and return item at index (default last)."""
         return super().pop(_transform_index(index))
