@@ -1,7 +1,7 @@
 # Bootle: Half-Index Lists for Python
 
 “Should array indices start at 0 or 1? My compromise of 0.5 was rejected
-without, I thought, proper consideration.” -- Stan Kelly-Bootle
+without, I thought, proper consideration.” — Stan Kelly-Bootle
 
 ## Installation
 
@@ -30,4 +30,4 @@ assert xs.index(2) == 1.5
 
 ## License
 
-WTFPL
+[WTFPL](http://www.wtfpl.net)
