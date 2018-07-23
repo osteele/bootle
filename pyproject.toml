@@ -1,0 +1,22 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "bootle"
+author = "Oliver Steele"
+author-email = "steele@osteele.com"
+description-file = "./README.md"
+home-page = "https://github.com/osteele/bootle"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+]
+dev-requires = [
+    "pytest (~=3.2)",
+]
+requires-python = ">=3.0"
