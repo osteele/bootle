@@ -9,20 +9,29 @@ def test_list_indices():
     assert lst[1.5] == 2
     assert lst[-0.5] == 3
 
-    lst[0.5] = 3
-    assert lst[0.5] == 3
+    lst[0.5] = 4
+    assert lst[0.5] == 4
+    assert lst == [4, 2, 3]
+
+    lst[-0.5] = 5
+    assert lst[-0.5] == 5
+    assert lst == [4, 2, 5]
 
 
 def test_list_slices():
     lst = List([1, 2, 3])
 
+    assert isinstance(lst[0.5:1.5], List)
+    assert isinstance(lst[:1.5], List)
+    assert isinstance(lst[1.5:], List)
+
     assert lst[:1.5] == [1]
+    assert lst[:2.5] == [1, 2]
     assert lst[0.5:1.5] == [1]
     assert lst[1.5:2.5] == [2]
     assert lst[0.5:-0.5] == [1, 2]
+    assert lst[-1.5:-0.5] == [2]
     assert lst[-0.5:] == [3]
-
-    assert isinstance(lst[:0.5], List)
 
     lst[0.5:2.5] = [4]
     assert lst[:] == [4, 3]
@@ -51,20 +60,28 @@ def test_list_index_errors():
     assert "must have a 0.5 fractional component" in str(excinfo.value)
 
 
-def test_list_methods():
+def test_list_reprs():
+    # str and repr
     # For maximum confusion, print a half-indexed list as a normal list.
     lst = List([1, 2, 3])
     assert str(lst) == "[1, 2, 3]"
     assert repr(lst) == "[1, 2, 3]"
 
+
+def test_list_del():
+    lst = List([1, 2, 3])
     del lst[0.5]
     assert lst == [2, 3]
 
+
+def test_list_index():
     lst = List([1, 2, 3])
     lst.index(2)
     with pytest.raises(ValueError):
         lst.index(4)
 
+
+def test_list_insert():
     lst = List([1, 2, 3])
     lst.insert(0.5, 4)
     assert lst == [4, 1, 2, 3]
@@ -77,6 +94,8 @@ def test_list_methods():
     lst.insert(-0.5, 4)
     assert lst == [1, 2, 4, 3]
 
+
+def test_list_pop():
     lst = List([1, 2, 3])
     value = lst.pop()
     assert value == 3

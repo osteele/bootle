@@ -10,7 +10,6 @@ test = "env PYTHONPATH=. pytest"
 [dev-packages]
 pytest = "*"
 flit = "*"
-sphinx_rtd_theme = "*"
 keyring = "*"
 
 [packages]
